@@ -79,7 +79,7 @@ export default function AReceberCard() {
                   <button
                     onClick={() => alternar(item)}
                     disabled={processando === item.participanteId}
-                    className={`shrink-0 rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
+                    className={`shrink-0 rounded-lg p-2 transition-colors disabled:opacity-50 ${
                       item.quitado
                         ? "text-text-muted hover:bg-bg-hover"
                         : "text-accent-green hover:bg-accent-green/10"

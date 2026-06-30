@@ -142,14 +142,14 @@ export default function Relatorios() {
       </div>
 
       <div className="flex gap-3">
-        <Select label="Mês" value={mes} onChange={(e) => setMes(Number(e.target.value))} className="w-40">
+        <Select label="Mês" value={mes} onChange={(e) => setMes(Number(e.target.value))} className="flex-1 sm:flex-none sm:w-40">
           {MESES.map((m, i) => (
             <option key={m} value={i + 1}>
               {m}
             </option>
           ))}
         </Select>
-        <Select label="Ano" value={ano} onChange={(e) => setAno(Number(e.target.value))} className="w-28">
+        <Select label="Ano" value={ano} onChange={(e) => setAno(Number(e.target.value))} className="w-24 sm:w-28">
           {anos.map((a) => (
             <option key={a} value={a}>
               {a}
@@ -195,9 +195,9 @@ export default function Relatorios() {
             </div>
           )}
 
-          <div className="rounded-xl border border-border bg-bg-card p-5">
+          <div className="rounded-xl border border-border bg-bg-card p-4 sm:p-5">
             <p className="text-body-sm font-medium text-text-secondary">Receitas vs despesas (últimos 6 meses)</p>
-            <div className="mt-3 h-64">
+            <div className="mt-3 h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={historico}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.07)" vertical={false} />
@@ -212,9 +212,9 @@ export default function Relatorios() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border bg-bg-card p-5">
+          <div className="rounded-xl border border-border bg-bg-card p-4 sm:p-5">
             <p className="text-body-sm font-medium text-text-secondary">Evolução do saldo (últimos 6 meses)</p>
-            <div className="mt-3 h-64">
+            <div className="mt-3 h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historico}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.07)" vertical={false} />
@@ -236,35 +236,35 @@ export default function Relatorios() {
             <GraficoPizza dados={porCategoria} />
           </div>
 
-          <div className="rounded-xl border border-border bg-bg-card p-5">
+          <div className="rounded-xl border border-border bg-bg-card p-4 sm:p-5">
             <p className="mb-3 text-body-sm font-medium text-text-secondary">Resumo por categoria</p>
             {porCategoria.length === 0 ? (
               <p className="py-6 text-center text-body-sm text-text-muted">Nenhum gasto registrado neste período.</p>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-body-sm">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <table className="w-full min-w-[320px] text-body-sm">
                   <thead className="text-muted text-text-muted">
                     <tr className="border-b border-border">
-                      <th className="px-2 py-2 text-left">Categoria</th>
-                      <th className="px-2 py-2 text-right">Total gasto</th>
-                      <th className="px-2 py-2 text-right">% do total</th>
-                      <th className="px-2 py-2 text-right">vs orçamento</th>
+                      <th className="px-4 py-2 text-left sm:px-2">Categoria</th>
+                      <th className="px-4 py-2 text-right sm:px-2">Gasto</th>
+                      <th className="px-4 py-2 text-right sm:px-2">%</th>
+                      <th className="hidden px-2 py-2 text-right sm:table-cell">vs orçamento</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {porCategoria.map((c) => (
                       <tr key={c.id}>
-                        <td className="px-2 py-2">
+                        <td className="px-4 py-2 sm:px-2">
                           <span className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: c.cor }} />
-                            {c.nome}
+                            <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: c.cor }} />
+                            <span className="truncate max-w-[120px] sm:max-w-none">{c.nome}</span>
                           </span>
                         </td>
-                        <td className="px-2 py-2 text-right tabular-nums text-text-primary">{fmtMoeda(c.gasto)}</td>
-                        <td className="px-2 py-2 text-right tabular-nums text-text-secondary">
+                        <td className="px-4 py-2 text-right tabular-nums text-text-primary sm:px-2">{fmtMoeda(c.gasto)}</td>
+                        <td className="px-4 py-2 text-right tabular-nums text-text-secondary sm:px-2">
                           {fmtPorcentagem(c.gasto, gastoTotal)}
                         </td>
-                        <td className="px-2 py-2 text-right tabular-nums text-text-secondary">
+                        <td className="hidden px-2 py-2 text-right tabular-nums text-text-secondary sm:table-cell">
                           {c.orcamento ? fmtPorcentagem(c.gasto, c.orcamento) : "sem limite"}
                         </td>
                       </tr>

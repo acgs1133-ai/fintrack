@@ -23,7 +23,7 @@ export default function FiltroTransacoes({ filtros, onChange }) {
   const anos = [anoAtual - 1, anoAtual, anoAtual + 1];
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+    <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:flex-wrap sm:items-end sm:gap-3">
       <Select
         label="Mês"
         value={filtros.mes}
@@ -75,7 +75,7 @@ export default function FiltroTransacoes({ filtros, onChange }) {
         ))}
       </Select>
 
-      <div className="flex-1 sm:min-w-[180px]">
+      <div className="col-span-2 flex-1 sm:min-w-[180px]">
         <label className="mb-1.5 block text-body-sm font-medium text-text-secondary">Buscar</label>
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />

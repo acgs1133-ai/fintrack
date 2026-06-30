@@ -46,19 +46,19 @@ export default function Modal({ isOpen, onClose, title, children, size = "md" })
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`w-full ${SIZE_CLASSES[size]} max-h-[90vh] overflow-y-auto rounded-xl border border-border bg-bg-card shadow-xl animate-slide-up`}
+        className={`w-full ${SIZE_CLASSES[size]} max-h-[92vh] overflow-y-auto rounded-xl border border-border bg-bg-card shadow-xl animate-slide-up`}
       >
-        <div className="flex items-center justify-between border-b border-border px-5 py-4">
-          <h2 className="text-title font-semibold text-text-primary">{title}</h2>
+        <div className="flex items-center justify-between border-b border-border px-4 py-3 sm:px-5 sm:py-4">
+          <h2 className="text-body-lg font-semibold text-text-primary sm:text-title">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Fechar"
-            className="rounded-lg p-1.5 text-text-secondary hover:bg-bg-hover hover:text-text-primary"
+            className="rounded-lg p-2 text-text-secondary hover:bg-bg-hover hover:text-text-primary"
           >
             <X size={18} />
           </button>
         </div>
-        <div className="p-5">{children}</div>
+        <div className="p-4 sm:p-5">{children}</div>
       </div>
     </div>
   );

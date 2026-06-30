@@ -58,7 +58,7 @@ export default function DivisaoFields({ ativo, onToggle, participantes, onChange
                   onChange={(e) => atualizarParticipante(idx, "valor", e.target.value)}
                   placeholder="0,00"
                   inputMode="decimal"
-                  className="w-28"
+                  className="w-20 sm:w-28"
                 />
                 <button
                   type="button"

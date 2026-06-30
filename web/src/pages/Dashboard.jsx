@@ -144,7 +144,7 @@ export default function Dashboard() {
           </div>
           <Button variant="primary" onClick={() => setModalNovaTransacao(true)}>
             <Plus size={16} />
-            Nova transação
+            <span className="hidden sm:inline">Nova transação</span>
           </Button>
         </div>
       </div>
