@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  id          String             @id @default(cuid())
+  nome        String             @unique
+  cor         String             @default("#71717A")
+  icone       String             @default("circle")
+  orcamento   Float?
+  sistema     Boolean            @default(false)
+  createdAt   DateTime           @default(now())
+  transacoes  Transacao[]
+  keywords    KeywordCategoria[]
+}
+
+model Transacao {
+  id          String          @id @default(cuid())
+  descricao   String
+  valor       Float
+  data        DateTime
+  tipo        Tipo            @default(DESPESA)
+  categoria   Categoria       @relation(fields: [categoriaId], references: [id])
+  categoriaId String
+  recorrente  Boolean         @default(false)
+  importada   Boolean         @default(false)
+  essencial   Essencialidade?
+  divisao     Divisao?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Meta {
+  id         String         @id @default(cuid())
+  nome       String
+  valorAlvo  Float
+  valorAtual Float          @default(0)
+  prazo      DateTime
+  concluida  Boolean        @default(false)
+  depositos  MetaDeposito[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
+// Aprendizado simples de categorização: palavra-chave -> categoria escolhida.
+model KeywordCategoria {
+  id          String    @id @default(cuid())
+  palavra     String    @unique
+  categoria   Categoria @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
+  categoriaId String
+  usos        Int       @default(1)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Estado das séries de recorrências/assinaturas (ativa/cancelada) sem apagar histórico.
+model Recorrencia {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  descricao String
+  ativa     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Histórico de aportes para projeção realista de metas.
+model MetaDeposito {
+  id     String   @id @default(cuid())
+  meta   Meta     @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId String
+  valor  Float
+  data   DateTime @default(now())
+}
+
+// Divisão de conta: uma transação compartilhada entre N pessoas.
+model Divisao {
+  id            String         @id @default(cuid())
+  transacao     Transacao      @relation(fields: [transacaoId], references: [id], onDelete: Cascade)
+  transacaoId   String         @unique
+  numPessoas    Int
+  participantes Participante[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Participante {
+  id        String  @id @default(cuid())
+  divisao   Divisao @relation(fields: [divisaoId], references: [id], onDelete: Cascade)
+  divisaoId String
+  nome      String
+  valor     Float
+  quitado   Boolean @default(false)
+}
+
+enum Tipo {
+  RECEITA
+  DESPESA
+}
+
+enum Essencialidade {
+  NECESSIDADE
+  DESEJO
+}
