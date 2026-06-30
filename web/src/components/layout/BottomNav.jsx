@@ -12,22 +12,30 @@ const NAV_ITEMS = [
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-border bg-bg-card md:hidden">
-      {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
-        <NavLink
-          key={to}
-          to={to}
-          end={to === "/"}
-          className={({ isActive }) =>
-            `flex flex-1 flex-col items-center gap-1 py-2.5 text-muted ${
-              isActive ? "text-accent-green" : "text-text-muted"
-            }`
-          }
-        >
-          <Icon size={20} />
-          <span className="leading-none">{label}</span>
-        </NavLink>
-      ))}
+    <nav className="fixed bottom-4 left-4 right-4 z-40 md:hidden">
+      <div className="flex items-center justify-around rounded-2xl bg-bg-card/95 px-1 py-1.5 shadow-xl shadow-black/40 backdrop-blur-md border border-border/60">
+        {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === "/"}
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all ${
+                isActive
+                  ? "bg-accent-green/15 text-accent-green"
+                  : "text-text-muted"
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <Icon size={19} strokeWidth={isActive ? 2.5 : 1.8} />
+                <span className="text-[9px] font-medium leading-none tracking-tight">{label}</span>
+              </>
+            )}
+          </NavLink>
+        ))}
+      </div>
     </nav>
   );
 }
