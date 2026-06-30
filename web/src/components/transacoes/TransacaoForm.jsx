@@ -17,7 +17,7 @@ const OPCOES_ESSENCIAL = [
 ];
 
 export default function TransacaoForm({ transacaoEditando, onSave, onCancel }) {
-  const { categorias } = useCategorias();
+  const { categorias, fetchCategorias } = useCategorias();
   const { showToast } = useToast();
   const sugerirCategoria = useAppStore((s) => s.sugerirCategoria);
 
@@ -43,6 +43,10 @@ export default function TransacaoForm({ transacaoEditando, onSave, onCancel }) {
   const [erros, setErros] = useState({});
   const [avisoDataFutura, setAvisoDataFutura] = useState(null);
   const [salvando, setSalvando] = useState(false);
+
+  useEffect(() => {
+    if (categorias.length === 0) fetchCategorias().catch(() => {});
+  }, []);
 
   // Lembra se o usuário escolheu manualmente categoria/essencialidade para não sobrescrever.
   const categoriaManual = useRef(!!transacaoEditando?.categoriaId);
@@ -148,7 +152,7 @@ export default function TransacaoForm({ transacaoEditando, onSave, onCancel }) {
       <div className="flex rounded-lg border border-border bg-bg-hover p-1">
         <button
           type="button"
-          onClick={() => setTipo("DESPESA")}
+          onClick={() => { setTipo("DESPESA"); setCategoriaId(""); categoriaManual.current = false; setSugestao(null); }}
           className={`flex-1 rounded-md py-2 text-body-sm font-medium transition-colors ${
             tipo === "DESPESA" ? "bg-accent-red/15 text-accent-red" : "text-text-secondary"
           }`}
@@ -157,7 +161,7 @@ export default function TransacaoForm({ transacaoEditando, onSave, onCancel }) {
         </button>
         <button
           type="button"
-          onClick={() => setTipo("RECEITA")}
+          onClick={() => { setTipo("RECEITA"); setCategoriaId(""); categoriaManual.current = false; setSugestao(null); }}
           className={`flex-1 rounded-md py-2 text-body-sm font-medium transition-colors ${
             tipo === "RECEITA" ? "bg-accent-green/15 text-accent-green" : "text-text-secondary"
           }`}
@@ -188,11 +192,13 @@ export default function TransacaoForm({ transacaoEditando, onSave, onCancel }) {
       <div>
         <Select label="Categoria" required value={categoriaId} onChange={handleCategoria} error={erros.categoria}>
           <option value="">Selecione uma categoria</option>
-          {categorias.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.nome}
-            </option>
-          ))}
+          {categorias
+            .filter((c) => c.tipoCat === tipo || c.tipoCat === "AMBOS")
+            .map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.nome}
+              </option>
+            ))}
         </Select>
         {sugestao && (
           <p className="mt-1.5 text-muted text-accent-green">

@@ -2,13 +2,20 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const CATEGORIAS = [
-  { nome: "Alimentação", cor: "#22C55E", icone: "utensils", orcamento: 1200, sistema: true },
-  { nome: "Transporte", cor: "#3B82F6", icone: "car", orcamento: 500, sistema: true },
-  { nome: "Moradia", cor: "#A855F7", icone: "home", orcamento: 1800, sistema: true },
-  { nome: "Saúde", cor: "#F97316", icone: "heart-pulse", orcamento: 400, sistema: true },
-  { nome: "Educação", cor: "#06B6D4", icone: "graduation-cap", orcamento: 350, sistema: true },
-  { nome: "Lazer", cor: "#EAB308", icone: "popcorn", orcamento: 300, sistema: true },
-  { nome: "Outros", cor: "#71717A", icone: "circle", orcamento: null, sistema: true },
+  { nome: "Alimentação", cor: "#22C55E", icone: "utensils", orcamento: 1200, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Transporte", cor: "#3B82F6", icone: "car", orcamento: 500, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Moradia", cor: "#A855F7", icone: "home", orcamento: 1800, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Saúde", cor: "#F97316", icone: "heart-pulse", orcamento: 400, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Educação", cor: "#06B6D4", icone: "graduation-cap", orcamento: 350, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Lazer", cor: "#EAB308", icone: "popcorn", orcamento: 300, sistema: true, tipoCat: "DESPESA" },
+  { nome: "Outros", cor: "#71717A", icone: "circle", orcamento: null, sistema: true, tipoCat: "AMBOS" },
+  // Categorias de receita
+  { nome: "Salário", cor: "#22C55E", icone: "briefcase", orcamento: null, sistema: true, tipoCat: "RECEITA" },
+  { nome: "Freelance", cor: "#3B82F6", icone: "laptop", orcamento: null, sistema: true, tipoCat: "RECEITA" },
+  { nome: "Investimentos", cor: "#A855F7", icone: "trending-up", orcamento: null, sistema: true, tipoCat: "RECEITA" },
+  { nome: "Aluguel recebido", cor: "#F97316", icone: "building", orcamento: null, sistema: true, tipoCat: "RECEITA" },
+  { nome: "Presente / Doação", cor: "#EAB308", icone: "gift", orcamento: null, sistema: true, tipoCat: "RECEITA" },
+  { nome: "Reembolso", cor: "#06B6D4", icone: "refresh-cw", orcamento: null, sistema: true, tipoCat: "RECEITA" },
 ];
 
 function diaAleatorio(mesOffset, dia) {
@@ -37,7 +44,7 @@ async function main() {
       valor: 6500,
       data: diaAleatorio(mesOffset, 5),
       tipo: "RECEITA",
-      categoriaId: categoriasCriadas["Outros"],
+      categoriaId: categoriasCriadas["Salário"],
       recorrente: true,
     })),
     ...[0, 1, 2].map((mesOffset) => ({
@@ -45,7 +52,7 @@ async function main() {
       valor: 850,
       data: diaAleatorio(mesOffset, 18),
       tipo: "RECEITA",
-      categoriaId: categoriasCriadas["Outros"],
+      categoriaId: categoriasCriadas["Freelance"],
     })),
     // Alimentação
     ...[0, 1, 2].flatMap((mesOffset) => [
